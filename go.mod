@@ -1,4 +1,4 @@
-module github.com/vbossica/golang-keyserver
+module github.com/vbossica/golang-licenseserver
 
 go 1.24.3
 
