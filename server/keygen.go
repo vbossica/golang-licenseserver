@@ -9,18 +9,18 @@ import (
 	"os"
 )
 
-func GenerateRsaKeyPair(privateKeyFilename string, publicKeyFilename string) error {
+func GenerateRsaKeyPair(privateKeyPath, publicKeyPath string) error {
 	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
 		return err
 	}
 	publicKey := &privateKey.PublicKey
 
-	err = writePrivateKeyToFile(privateKey, privateKeyFilename)
+	err = writePrivateKeyToFile(privateKey, privateKeyPath)
 	if err != nil {
 		return fmt.Errorf("error writing private key to file: %s", err)
 	}
-	err = writePublicKeyToFile(publicKey, publicKeyFilename)
+	err = writePublicKeyToFile(publicKey, publicKeyPath)
 	if err != nil {
 		return fmt.Errorf("error writing public key to file: %s", err)
 	}

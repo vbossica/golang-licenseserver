@@ -2,27 +2,33 @@
 
 This repository contains a simple Golang license server that generates license keys for embedded systems. The license keys are signed with a private key and verified with a public key.
 
-## Testing
+For the purpose of validating the workflow, the server and client code have been integrated into command line applications. For production use, the server code should be run as a service, while the client code is integrated into the embedded system.
 
-1. Public and private keys are generated:
+1. Build the server and client command line applications:
 
     ```bash
-    ssh-keygen
+    make build
     ```
 
-    The private key is stored privately, while the public key is shared with the customer.
+1. Generate the public and private keys in the PEM format:
 
-2. The customer generates a license key by providing the hardware id and the name of the service for which the license key is requested. Based on those values, the license key is generated:
-
-    ```go
+    ```bash
+    ./license-server -generateKeys
     ```
 
-    This license key is stored in the embedded system.
+    The private key is stored privately, while the public key is installed on the embedded system, alongside the license key generated in the next step.
 
-3. At startup, the embedded system verifies the signature of the license key by using the public key. If the signature is valid, the system proceeds to check the HMAC value and the service name. If both values match, the system is licensed and can be used. Otherwise, it will not start.
+2. Generate a license key by providing the name of the feature to support as well as the duration (in months):
 
-    ```go
+    ```bash
+    ./license-server -generateLicense \
+        -features "feature-1,feature-2" \
+        -duration 12
     ```
 
+3. At startup, the embedded system verifies that the feature corresponding to that system is listed in the license:
 
-
+    ```bash
+    ./license-client -verifyFeature \
+        -feature feature-1
+    ```

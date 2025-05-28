@@ -12,7 +12,8 @@
             },
             "extensions": [
                 "golang.go",
-                "ms-vscode.go"
+                "ms-vscode.go",
+                "ms-vscode.makefile-tools"
             ]
         }
     },
