@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/vbossica/golang-licenseserver/client"
 )
@@ -24,10 +23,9 @@ func main() {
 			log.Fatal("Error writing instantiating the LicenseClient:", err)
 		}
 
-		isValid, err := licenseClient.VerifyLicense(*feature)
+		isValid, err := licenseClient.VerifyFeature(*feature)
 		if err != nil {
 			fmt.Println("Error verifying license:", err)
-			os.Exit(1)
 		}
 
 		fmt.Println("Is claim valid:", isValid)

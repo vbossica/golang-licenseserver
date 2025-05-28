@@ -34,7 +34,7 @@ func (lc *LicenseClient) Init(publicKeyFilename string, licenseFilename string) 
 	return nil
 }
 
-func (lc *LicenseClient) VerifyLicense(feature string) (bool, error) {
+func (lc *LicenseClient) VerifyFeature(feature string) (bool, error) {
 	token, err := jwt.Parse(lc.license, func(token *jwt.Token) (any, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])

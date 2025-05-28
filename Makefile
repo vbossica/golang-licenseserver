@@ -7,7 +7,7 @@ build:
 	go build -o ${SERVER_BINARY_NAME} cmd/license_server/main.go
 
 test:
-	go test -v ./...
+	go test ./client ./server
 
 clean:
 	go clean
