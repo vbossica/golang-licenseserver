@@ -1,0 +1,8 @@
+# Binaries
+license-client
+license-server
+
+# Test files
+private.pem
+public.pem
+license.txt
