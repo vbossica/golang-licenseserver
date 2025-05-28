@@ -9,16 +9,26 @@ import (
 	"os"
 )
 
-func GenerateRsaKeyPair() (*rsa.PrivateKey, *rsa.PublicKey, error) {
+func GenerateRsaKeyPair(privateKeyFilename string, publicKeyFilename string) error {
 	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
-		return nil, nil, err
+		return err
 	}
 	publicKey := &privateKey.PublicKey
-	return privateKey, publicKey, nil
+
+	err = writePrivateKeyToFile(privateKey, privateKeyFilename)
+	if err != nil {
+		return fmt.Errorf("error writing private key to file: %s", err)
+	}
+	err = writePublicKeyToFile(publicKey, publicKeyFilename)
+	if err != nil {
+		return fmt.Errorf("error writing public key to file: %s", err)
+	}
+
+	return nil
 }
 
-func WritePrivateKeyToFile(privatekey *rsa.PrivateKey, filename string) error {
+func writePrivateKeyToFile(privatekey *rsa.PrivateKey, filename string) error {
 	var privateKeyBytes []byte = x509.MarshalPKCS1PrivateKey(privatekey)
 	privateKeyBlock := &pem.Block{
 		Type:  "RSA PRIVATE KEY",
@@ -35,7 +45,7 @@ func WritePrivateKeyToFile(privatekey *rsa.PrivateKey, filename string) error {
 	return nil
 }
 
-func WritePublicKeyToFile(publickey *rsa.PublicKey, filename string) error {
+func writePublicKeyToFile(publickey *rsa.PublicKey, filename string) error {
 	var publicKeyBytes, err = x509.MarshalPKIXPublicKey(publickey)
 	if err != nil {
 		return fmt.Errorf("error when dumping publickey: %s \n", err)
