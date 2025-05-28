@@ -13,7 +13,9 @@ For the purpose of validating the workflow, the server and client code have been
 1. Generate the public and private keys in the PEM format:
 
     ```bash
-    ./license-server -generateKeys
+    ./license-server -generateKeys \
+        -privateKeyPath private.pem \
+        -publicKeyPath public.pem
     ```
 
     The private key is stored privately, while the public key is installed on the embedded system, alongside the license key generated in the next step.
@@ -22,13 +24,17 @@ For the purpose of validating the workflow, the server and client code have been
 
     ```bash
     ./license-server -generateLicense \
+        -privateKeyPath private.pem \
         -features "feature-1,feature-2" \
-        -duration 12
+        -duration 12 \
+        -licensePath license.txt
     ```
 
 3. At startup, the embedded system verifies that the feature corresponding to that system is listed in the license:
 
     ```bash
     ./license-client -verifyFeature \
+        -publicKeyPath public.pem \
+        -licensePath license.txt \
         -feature feature-1
     ```
