@@ -18,11 +18,12 @@ func GenerateRsaKeyPair(privateKeyPath, publicKeyPath string) error {
 
 	err = writePrivateKeyToFile(privateKey, privateKeyPath)
 	if err != nil {
-		return fmt.Errorf("error writing private key to file: %s", err)
+		return err
 	}
+
 	err = writePublicKeyToFile(publicKey, publicKeyPath)
 	if err != nil {
-		return fmt.Errorf("error writing public key to file: %s", err)
+		return err
 	}
 
 	return nil
@@ -36,11 +37,11 @@ func writePrivateKeyToFile(privatekey *rsa.PrivateKey, filename string) error {
 	}
 	privatePemFile, err := os.Create(filename)
 	if err != nil {
-		return fmt.Errorf("error when create %s: %s \n", filename, err)
+		return fmt.Errorf("error when creating %s: %s", filename, err)
 	}
 	err = pem.Encode(privatePemFile, privateKeyBlock)
 	if err != nil {
-		return fmt.Errorf("error when encode private pem: %s \n", err)
+		return fmt.Errorf("error when encoding private pem: %s", err)
 	}
 	return nil
 }
@@ -48,7 +49,7 @@ func writePrivateKeyToFile(privatekey *rsa.PrivateKey, filename string) error {
 func writePublicKeyToFile(publickey *rsa.PublicKey, filename string) error {
 	var publicKeyBytes, err = x509.MarshalPKIXPublicKey(publickey)
 	if err != nil {
-		return fmt.Errorf("error when dumping publickey: %s \n", err)
+		return fmt.Errorf("error when dumping publickey: %s", err)
 	}
 	publicKeyBlock := &pem.Block{
 		Type:  "PUBLIC KEY",
@@ -56,11 +57,11 @@ func writePublicKeyToFile(publickey *rsa.PublicKey, filename string) error {
 	}
 	publicPemFile, err := os.Create(filename)
 	if err != nil {
-		return fmt.Errorf("error when create %s: %s \n", filename, err)
+		return fmt.Errorf("error when creating %s: %s", filename, err)
 	}
 	err = pem.Encode(publicPemFile, publicKeyBlock)
 	if err != nil {
-		return fmt.Errorf("error when encode public pem: %s \n", err)
+		return fmt.Errorf("error when encoding public pem: %s", err)
 	}
 	return nil
 }
